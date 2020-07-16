@@ -21,7 +21,7 @@ union header{
 
 typedef union header header_t;
 
-header_t *head = NULL, header_t *tail = NULL;
+header_t *head = NULL, *tail = NULL;
 pthread_mutex_t global_malloc_lock;
 
 
@@ -99,6 +99,9 @@ void free(void *block)
 
 void *calloc(size_t num, size_t nsize)
 {
+    size_t size;
+    void *block;
+
     if(!num || !nsize)
         return NULL;
     size = num * nsize;
@@ -117,7 +120,7 @@ void *realloc(void *block, size_t size)
     header_t *header;
     void *ret;
 
-    if(!block || !size)
+    if(!block || !size)
         return malloc(size);
     header = (header_t*)block -1;
     if (header->s.size >= size)
